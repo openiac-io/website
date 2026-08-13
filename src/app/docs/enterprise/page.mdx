@@ -1,0 +1,11 @@
+# Enterprise Air-gapped (Coming Soon)
+
+The Enterprise Core package includes our proprietary packager scripts for true 100% offline environments.
+
+## How it works
+
+1. **Packager Stage**: Run the `packager.sh` script on a machine with internet access. It downloads and bundles everything into a single tarball.
+2. **Transfer Stage**: Move the tarball via secure media (USB, secure file transfer) into the air-gapped environment.
+3. **Deploy Stage**: Extract the tarball on a bootstrap node and run the deployment script.
+
+*This feature is currently in private beta. Please join our waitlist to get early access.*

@@ -1,0 +1,23 @@
+# Online Deployment
+
+If your nodes have internet access, you can deploy OpenIaC using the community version.
+
+## Inventory Configuration
+
+Define your baremetal nodes in `inventory/hosts.ini`:
+
+```ini
+[masters]
+master1 ansible_host=10.0.0.10
+master2 ansible_host=10.0.0.11
+
+[workers]
+worker1 ansible_host=10.0.0.20
+worker2 ansible_host=10.0.0.21
+```
+
+## Running the Playbook
+
+```bash
+ansible-playbook -i inventory/hosts.ini site.yml
+```
