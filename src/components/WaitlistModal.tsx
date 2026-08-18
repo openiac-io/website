@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Loader2, Mail } from 'lucide-react';
+import { joinWaitlist } from '@/actions/waitlist';
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -13,23 +14,29 @@ interface WaitlistModalProps {
 export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise Core' }: WaitlistModalProps) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setStatus('loading');
+    setErrorMessage('');
     
-    // Mock API call
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    console.log(`Waitlist signup for ${planName} with email: ${email}`);
+    const result = await joinWaitlist(email, planName);
     
-    setStatus('success');
+    if (result.success) {
+      setStatus('success');
+    } else {
+      setStatus('error');
+      setErrorMessage(result.error || '오류가 발생했습니다.');
+    }
   };
 
   const handleClose = () => {
     setStatus('idle');
     setEmail('');
+    setErrorMessage('');
     onClose();
   };
 
@@ -100,6 +107,11 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
                         className="w-full pl-10 pr-4 py-3 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-shadow"
                       />
                     </div>
+                    {status === 'error' && (
+                      <p className="text-sm text-red-500 font-medium px-1">
+                        {errorMessage}
+                      </p>
+                    )}
                     <button
                       type="submit"
                       disabled={status === 'loading'}
