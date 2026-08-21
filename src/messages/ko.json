@@ -1,0 +1,76 @@
+{
+  "Hero": {
+    "badge": "엔터프라이즈 IaC 모노레포 공개 예정",
+    "titleLine1": "Air-gapped 인프라 구축,",
+    "titleLine2": "더 이상 삽질하지 마세요.",
+    "description": "베어메탈, 온프레미스, 그리고 폐쇄망까지. OpenIaC는 복잡한 인프라 환경을 위한 가장 안정적이고 모듈화된 Infrastructure as Code 솔루션입니다.",
+    "joinWaitlist": "Join Waitlist",
+    "github": "GitHub"
+  },
+  "Features": {
+    "title": "폐쇄망 환경에 최적화된 아키텍처",
+    "description": "온라인 환경에서 개발하고, 오프라인 환경에 완벽하게 배포하세요.",
+    "item1": {
+      "title": "KVM 및 베어메탈 테스트 환경",
+      "desc": "실제 하드웨어 배포 전, 로컬 KVM 및 베어메탈 환경에서 완벽하게 시뮬레이션 및 검증합니다."
+    },
+    "item2": {
+      "title": "폐쇄망 100% 대응",
+      "desc": "Packager 스크립트를 통해 모든 의존성을 오프라인 패키지로 만들어 안전하게 반입합니다."
+    },
+    "item3": {
+      "title": "모듈형 Add-on",
+      "desc": "Helm 기반의 유연한 아키텍처로 필요한 컴포넌트만 선택하여 배포할 수 있습니다."
+    }
+  },
+  "Pricing": {
+    "title": "프로젝트 규모에 맞는 플랜",
+    "description": "초기 오픈소스 커뮤니티 빌딩 단계입니다. 유료 패키지는 현재 대기자 명단을 받고 있습니다.",
+    "community": {
+      "name": "Community",
+      "price": "Free",
+      "desc": "온라인망 전용 베어메탈 설치 코드. 퍼블릭 레포지토리에서 바로 시작하세요.",
+      "button": "GitHub로 이동",
+      "features": [
+        "기본 베어메탈 프로비저닝",
+        "온라인 의존성 설치",
+        "커뮤니티 이슈 트래커"
+      ]
+    },
+    "enterprise": {
+      "badge": "Coming Soon",
+      "name": "Enterprise Subscription",
+      "price": "$$$",
+      "desc": "수십 GB에 달하는 폐쇄망 전용 오프라인 패키징 아티팩트 독점 제공 및 로그 분석 기반 비동기식 기술 지원",
+      "button": "Join Waitlist",
+      "features": [
+        "모든 Community 기능",
+        "오프라인 패키징 스크립트",
+        "KVM 및 베어메탈 로컬 테스트 환경",
+        "로그 분석 기반 비동기 기술 지원"
+      ]
+    }
+  },
+  "Waitlist": {
+    "successTitle": "등록 완료!",
+    "successDesc1": "현재 {planName} 버전은 비공개 베타(개발 중)입니다.",
+    "successDesc2": "출시되면 가장 먼저 알려드릴게요!",
+    "close": "닫기",
+    "formTitle": "대기자 명단 등록",
+    "formDesc": "{planName} 출시에 대한 소식을 가장 먼저 받아보세요.",
+    "placeholder": "업무용 이메일 주소",
+    "loading": "처리 중...",
+    "submit": "알림 신청하기",
+    "errorDefault": "오류가 발생했습니다."
+  },
+  "Navbar": {
+    "docs": "Documentation",
+    "getStarted": "Get Started",
+    "github": "GitHub"
+  },
+  "Footer": {
+    "docs": "Documentation",
+    "github": "GitHub",
+    "copyright": "© {year} OpenIaC. All rights reserved."
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "Hero": {
+    "badge": "Enterprise IaC Monorepo Coming Soon",
+    "titleLine1": "Air-gapped Infrastructure,",
+    "titleLine2": "Without the Headache.",
+    "description": "From baremetal to on-premise and air-gapped environments. OpenIaC is the most stable and modular Infrastructure as Code solution for complex environments.",
+    "joinWaitlist": "Join Waitlist",
+    "github": "GitHub"
+  },
+  "Features": {
+    "title": "Optimized for Air-gapped Environments",
+    "description": "Develop online, and deploy seamlessly to offline environments.",
+    "item1": {
+      "title": "KVM & Baremetal Test Environments",
+      "desc": "Perfectly simulate and verify your infrastructure locally using KVM and baremetal before actual hardware deployment."
+    },
+    "item2": {
+      "title": "100% Air-gapped Ready",
+      "desc": "Safely import all dependencies as offline packages using our Packager scripts."
+    },
+    "item3": {
+      "title": "Modular Add-ons",
+      "desc": "Deploy only the components you need with our flexible Helm-based architecture."
+    }
+  },
+  "Pricing": {
+    "title": "Plans that fit your project scale",
+    "description": "Currently in the initial open-source community building phase. We are taking waitlist registrations for paid packages.",
+    "community": {
+      "name": "Community",
+      "price": "Free",
+      "desc": "Baremetal installation code for online environments. Get started right away from our public repository.",
+      "button": "Go to GitHub",
+      "features": [
+        "Basic baremetal provisioning",
+        "Online dependency installation",
+        "Community issue tracker"
+      ]
+    },
+    "enterprise": {
+      "badge": "Coming Soon",
+      "name": "Enterprise Subscription",
+      "price": "$$$",
+      "desc": "Exclusive access to tens of GBs of air-gapped offline packaging artifacts and asynchronous technical support based on log analysis.",
+      "button": "Join Waitlist",
+      "features": [
+        "All Community features",
+        "Offline packaging scripts",
+        "KVM & baremetal local test environments",
+        "Asynchronous technical support"
+      ]
+    }
+  },
+  "Waitlist": {
+    "successTitle": "Registration Complete!",
+    "successDesc1": "The {planName} version is currently in private beta (in development).",
+    "successDesc2": "We'll let you know as soon as it's released!",
+    "close": "Close",
+    "formTitle": "Join the Waitlist",
+    "formDesc": "Be the first to hear about the {planName} release.",
+    "placeholder": "Work email address",
+    "loading": "Processing...",
+    "submit": "Notify Me",
+    "errorDefault": "An error occurred."
+  },
+  "Navbar": {
+    "docs": "Documentation",
+    "getStarted": "Get Started",
+    "github": "GitHub"
+  },
+  "Footer": {
+    "docs": "Documentation",
+    "github": "GitHub",
+    "copyright": "© {year} OpenIaC. All rights reserved."
+  }
+}
