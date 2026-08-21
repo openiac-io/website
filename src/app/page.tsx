@@ -47,7 +47,7 @@ export default function Home() {
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button 
-                onClick={() => openWaitlist('Enterprise Core')}
+                onClick={() => openWaitlist('Enterprise Subscription')}
                 className="w-full sm:w-auto rounded-full bg-brand-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-brand-500 hover:shadow-brand-500/25 transition-all flex items-center justify-center gap-2"
               >
                 Join Waitlist <ArrowRight className="h-5 w-5" />
@@ -78,8 +78,8 @@ export default function Home() {
             {[
               {
                 icon: <Server className="h-6 w-6 text-brand-400" />,
-                title: "Vagrant 테스트 환경",
-                desc: "실제 하드웨어 배포 전, 로컬 Vagrant 환경에서 완벽하게 시뮬레이션 및 검증합니다."
+                title: "KVM 및 베어메탈 테스트 환경",
+                desc: "실제 하드웨어 배포 전, 로컬 KVM 및 베어메탈 환경에서 완벽하게 시뮬레이션 및 검증합니다."
               },
               {
                 icon: <Lock className="h-6 w-6 text-brand-400" />,
@@ -121,9 +121,9 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-center">
             {/* Community */}
-            <div className="bg-background border border-border rounded-3xl p-8 shadow-sm">
+            <div className="bg-background border border-border rounded-3xl p-8 shadow-sm h-full flex flex-col">
               <h3 className="text-xl font-semibold mb-2">Community</h3>
               <div className="mb-6">
                 <span className="text-4xl font-bold">Free</span>
@@ -134,7 +134,7 @@ export default function Home() {
               <Link 
                 href="https://github.com/openiac-io/openiac"
                 target="_blank"
-                className="w-full block text-center rounded-xl border border-border bg-muted/50 py-3 font-medium hover:bg-muted transition-colors mb-8"
+                className="w-full block text-center rounded-xl border border-border bg-muted/50 py-3 font-medium hover:bg-muted transition-colors mb-8 mt-auto"
               >
                 GitHub로 이동
               </Link>
@@ -148,29 +148,29 @@ export default function Home() {
               </ul>
             </div>
 
-            {/* Enterprise Core */}
+            {/* Enterprise Subscription */}
             <motion.div 
               whileHover={{ y: -5 }}
-              className="bg-muted border-2 border-brand-500 rounded-3xl p-8 shadow-2xl shadow-brand-500/10 relative"
+              className="bg-muted border-2 border-brand-500 rounded-3xl p-8 shadow-2xl shadow-brand-500/10 relative h-full flex flex-col"
             >
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                 Coming Soon
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Enterprise Core</h3>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Enterprise Subscription</h3>
               <div className="mb-6 flex items-baseline">
                 <span className="text-4xl font-bold text-foreground">$$$</span>
               </div>
               <p className="text-muted-foreground mb-8 min-h-[48px]">
-                폐쇄망 전용 오프라인 패키징 스크립트. 완벽한 에어갭 환경 구축.
+                수십 GB에 달하는 폐쇄망 전용 오프라인 패키징 아티팩트 독점 제공 및 로그 분석 기반 비동기식 기술 지원
               </p>
               <button 
-                onClick={() => openWaitlist('Enterprise Core')}
-                className="w-full block text-center rounded-xl bg-brand-600 py-3 font-medium text-white hover:bg-brand-500 transition-colors mb-8"
+                onClick={() => openWaitlist('Enterprise Subscription')}
+                className="w-full block text-center rounded-xl bg-brand-600 py-3 font-medium text-white hover:bg-brand-500 transition-colors mb-8 mt-auto"
               >
                 Join Waitlist
               </button>
               <ul className="space-y-4">
-                {['모든 Community 기능', '오프라인 패키징 스크립트', 'Vagrant 로컬 테스트 환경', '이메일 기술 지원'].map((f, i) => (
+                {['모든 Community 기능', '오프라인 패키징 스크립트', 'KVM 및 베어메탈 로컬 테스트 환경', '로그 분석 기반 비동기 기술 지원'].map((f, i) => (
                   <li key={i} className="flex items-center text-sm text-foreground">
                     <Check className="h-5 w-5 text-brand-500 mr-3 flex-shrink-0" />
                     {f}
@@ -178,32 +178,6 @@ export default function Home() {
                 ))}
               </ul>
             </motion.div>
-
-            {/* Premium Add-ons */}
-            <div className="bg-background border border-border rounded-3xl p-8 shadow-sm">
-              <h3 className="text-xl font-semibold mb-2">Premium Add-ons</h3>
-              <div className="mb-6 flex items-baseline">
-                <span className="text-4xl font-bold">$$</span>
-                <span className="text-muted-foreground ml-2">/ module</span>
-              </div>
-              <p className="text-muted-foreground mb-8 min-h-[48px]">
-                Galera Cluster, Harbor 등 폐쇄망 전용 추가 확장 모듈.
-              </p>
-              <button 
-                onClick={() => openWaitlist('Premium Add-ons')}
-                className="w-full block text-center rounded-xl border border-border bg-background py-3 font-medium hover:bg-muted transition-colors mb-8"
-              >
-                Notify Me
-              </button>
-              <ul className="space-y-4">
-                {['Galera DB Cluster', 'Harbor Container Registry', 'Elastic Stack 로깅', '모듈별 개별 기술 지원'].map((f, i) => (
-                  <li key={i} className="flex items-center text-sm text-muted-foreground">
-                    <Check className="h-5 w-5 text-brand-500 mr-3 flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
       </section>

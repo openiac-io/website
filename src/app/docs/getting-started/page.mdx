@@ -1,19 +1,18 @@
 # Getting Started (Local Test)
 
-Before touching real hardware, OpenIaC provides a Vagrant-based local test environment.
+Before touching real hardware, OpenIaC provides a KVM and baremetal-based local test environment.
 
 ## Prerequisites
 
-- Vagrant
-- VirtualBox
+- KVM / QEMU
 - Ansible
 
 ## Bootstrapping Local Nodes
 
 ```bash
 git clone https://github.com/openiac-io/openiac.git
-cd openiac/vagrant
-vagrant up
+cd openiac/kvm
+# KVM provision script (coming soon)
 ```
 
 Once the nodes are up, you can run our playbooks against them to verify changes safely.
