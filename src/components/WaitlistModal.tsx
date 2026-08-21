@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Loader2, Mail } from 'lucide-react';
 import { joinWaitlist } from '@/actions/waitlist';
+import { useTranslations } from 'next-intl';
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -11,10 +12,11 @@ interface WaitlistModalProps {
   planName?: string;
 }
 
-export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise Core' }: WaitlistModalProps) {
+export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise Subscription' }: WaitlistModalProps) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const t = useTranslations('Waitlist');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
       setStatus('success');
     } else {
       setStatus('error');
-      setErrorMessage(result.error || '오류가 발생했습니다.');
+      setErrorMessage(result.error || t('errorDefault'));
     }
   };
 
@@ -74,23 +76,23 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
                   >
                     <CheckCircle2 className="h-16 w-16 text-emerald-500 mb-4" />
                   </motion.div>
-                  <h3 className="text-2xl font-bold mb-2">등록 완료!</h3>
+                  <h3 className="text-2xl font-bold mb-2">{t('successTitle')}</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    현재 {planName} 버전은 비공개 베타(개발 중)입니다.<br/>
-                    출시되면 가장 먼저 알려드릴게요!
+                    {t('successDesc1', { planName })}<br/>
+                    {t('successDesc2')}
                   </p>
                   <button
                     onClick={handleClose}
                     className="mt-8 w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2.5 rounded-xl transition-colors"
                   >
-                    닫기
+                    {t('close')}
                   </button>
                 </div>
               ) : (
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">대기자 명단 등록</h3>
+                  <h3 className="text-2xl font-bold mb-2">{t('formTitle')}</h3>
                   <p className="text-muted-foreground mb-6">
-                    {planName} 출시에 대한 소식을 가장 먼저 받아보세요.
+                    {t('formDesc', { planName })}
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -103,7 +105,7 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="업무용 이메일 주소"
+                        placeholder={t('placeholder')}
                         className="w-full pl-10 pr-4 py-3 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-shadow"
                       />
                     </div>
@@ -120,10 +122,10 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
                       {status === 'loading' ? (
                         <>
                           <Loader2 className="h-5 w-5 animate-spin" />
-                          처리 중...
+                          {t('loading')}
                         </>
                       ) : (
-                        '알림 신청하기'
+                        t('submit')
                       )}
                     </button>
                   </form>
