@@ -57,8 +57,16 @@
     "successDesc2": "출시되면 가장 먼저 알려드릴게요!",
     "close": "닫기",
     "formTitle": "대기자 명단 등록",
-    "formDesc": "{planName} 출시에 대한 소식을 가장 먼저 받아보세요.",
-    "placeholder": "업무용 이메일 주소",
+    "formDesc": "{planName} 출시 소식을 가장 먼저 받아보세요.",
+    "placeholder": "회사 이메일 주소",
+    "companyPlaceholder": "회사명 (선택)",
+    "interestLabel": "가장 관심있는 솔루션 (선택)",
+    "interestOptions": {
+      "k8s": "Kubernetes (K3s/RKE2)",
+      "openstack": "OpenStack 가상화",
+      "both": "둘 다",
+      "other": "기타"
+    },
     "loading": "처리 중...",
     "submit": "알림 신청하기",
     "errorDefault": "오류가 발생했습니다."

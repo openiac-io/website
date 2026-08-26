@@ -10,7 +10,7 @@ const supabase = supabaseUrl && supabaseServiceRoleKey
   ? createClient(supabaseUrl, supabaseServiceRoleKey)
   : null;
 
-export async function joinWaitlist(email: string, planName: string) {
+export async function joinWaitlist(email: string, planName: string, company?: string, interest?: string) {
   if (!supabase) {
     console.error('Supabase client is not initialized. Please check your environment variables.');
     return { success: false, error: '서버 설정 오류가 발생했습니다.' };
@@ -20,7 +20,7 @@ export async function joinWaitlist(email: string, planName: string) {
     const { error } = await supabase
       .from('waitlists')
       .insert([
-        { email, plan_name: planName }
+        { email, plan_name: planName, company, interest }
       ]);
 
     if (error) {

@@ -59,6 +59,14 @@
     "formTitle": "Join the Waitlist",
     "formDesc": "Be the first to hear about the {planName} release.",
     "placeholder": "Work email address",
+    "companyPlaceholder": "Company Name (Optional)",
+    "interestLabel": "Solutions of Interest (Optional)",
+    "interestOptions": {
+      "k8s": "Kubernetes (K3s/RKE2)",
+      "openstack": "OpenStack Virtualization",
+      "both": "Both",
+      "other": "Other"
+    },
     "loading": "Processing...",
     "submit": "Notify Me",
     "errorDefault": "An error occurred."

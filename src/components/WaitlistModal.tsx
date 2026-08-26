@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, Loader2, Mail } from 'lucide-react';
+import { X, CheckCircle2, Loader2, Mail, Building2 } from 'lucide-react';
 import { joinWaitlist } from '@/actions/waitlist';
 import { useTranslations } from 'next-intl';
 
@@ -14,6 +14,8 @@ interface WaitlistModalProps {
 
 export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise Subscription' }: WaitlistModalProps) {
   const [email, setEmail] = useState('');
+  const [company, setCompany] = useState('');
+  const [interest, setInterest] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const t = useTranslations('Waitlist');
@@ -25,7 +27,7 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
     setStatus('loading');
     setErrorMessage('');
     
-    const result = await joinWaitlist(email, planName);
+    const result = await joinWaitlist(email, planName, company, interest);
     
     if (result.success) {
       setStatus('success');
@@ -38,6 +40,8 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
   const handleClose = () => {
     setStatus('idle');
     setEmail('');
+    setCompany('');
+    setInterest('');
     setErrorMessage('');
     onClose();
   };
@@ -58,7 +62,7 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-md bg-background border border-border shadow-2xl rounded-2xl p-6 pointer-events-auto relative overflow-hidden"
+              className="w-full max-w-md bg-background border border-border shadow-2xl rounded-2xl p-6 pointer-events-auto relative overflow-hidden max-h-[90vh] overflow-y-auto"
             >
               <button 
                 onClick={handleClose}
@@ -109,6 +113,35 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
                         className="w-full pl-10 pr-4 py-3 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-shadow"
                       />
                     </div>
+                    
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Building2 className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <input
+                        type="text"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        placeholder={t('companyPlaceholder')}
+                        className="w-full pl-10 pr-4 py-3 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-shadow"
+                      />
+                    </div>
+
+                    <div className="space-y-2 pb-2">
+                      <label className="text-sm font-medium text-muted-foreground px-1">{t('interestLabel')}</label>
+                      <select 
+                        value={interest}
+                        onChange={(e) => setInterest(e.target.value)}
+                        className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-shadow appearance-none cursor-pointer"
+                      >
+                        <option value="">-- {t('interestLabel')} --</option>
+                        <option value="k8s">{t('interestOptions.k8s')}</option>
+                        <option value="openstack">{t('interestOptions.openstack')}</option>
+                        <option value="both">{t('interestOptions.both')}</option>
+                        <option value="other">{t('interestOptions.other')}</option>
+                      </select>
+                    </div>
+
                     {status === 'error' && (
                       <p className="text-sm text-red-500 font-medium px-1">
                         {errorMessage}
@@ -117,7 +150,7 @@ export default function WaitlistModal({ isOpen, onClose, planName = 'Enterprise 
                     <button
                       type="submit"
                       disabled={status === 'loading'}
-                      className="w-full bg-foreground text-background font-medium py-3 rounded-xl transition-all hover:bg-foreground/90 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                      className="w-full bg-foreground text-background font-medium py-3 rounded-xl transition-all hover:bg-foreground/90 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2 mt-2"
                     >
                       {status === 'loading' ? (
                         <>
