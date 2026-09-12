@@ -9,7 +9,7 @@ export default function DocsLayout({
     { href: '/docs', label: 'Introduction' },
     { href: '/docs/getting-started', label: 'Getting Started' },
     { href: '/docs/online-deployment', label: 'Online Deployment' },
-    { href: '/docs/enterprise', label: 'Enterprise Air-gapped' },
+    { href: '/docs/offline-deployment', label: 'Offline Air-gapped' },
   ];
 
   return (

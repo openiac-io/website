@@ -1,0 +1,15 @@
+# Offline Air-gapped Deployment
+
+OpenIaC provides fully open-source, modular packager scripts for true 100% offline environments.
+
+## How it works
+
+1. **Packager Stage**: Run the `packager/build_offline_tarball.sh` script on a bastion machine with internet access (must match the target baremetal OS). It automatically downloads and bundles all RPMs, binaries, and container images into a single tarball.
+2. **Transfer Stage**: Move the generated tarball via secure media (USB, secure file transfer) into the air-gapped environment.
+3. **Deploy Stage**: Extract the tarball in the `packager/` directory on your bootstrap node and run the standard Ansible deployment playbooks. The playbooks will automatically detect the offline artifacts and skip external downloads.
+
+## Supported Solutions
+
+- Kubernetes (K3s)
+- Ceph (Quincy, Reef, Squid)
+- OpenStack (Bobcat, Caracal) - *Architecture in progress*

@@ -16,11 +16,11 @@ export default function Navbar() {
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link href="/#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</Link>
-          <Link href="/#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
+          
           <Link href="/docs" className="text-muted-foreground hover:text-foreground transition-colors">Documentation</Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Link href="/#pricing" className="text-sm font-medium bg-foreground text-background hover:bg-foreground/90 px-4 py-2 rounded-full transition-colors">Get Started</Link>
+          
         </div>
       </div>
     </header>
