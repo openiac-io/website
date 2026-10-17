@@ -1,11 +1,27 @@
 # Introduction to OpenIaC
 
-Welcome to OpenIaC! OpenIaC is an Enterprise Infrastructure as Code (IaC) monorepo tailored for baremetal and air-gapped (on-premise) environments.
+**OpenIaC** is an enterprise-grade, 100% open-source Infrastructure as Code (IaC) framework designed to provision **Container, Cloud-Native Virtualization, and Private/Public Cloud Platforms** with a single command.
 
-## Why OpenIaC?
+Built with a **Zero-Knowledge UX** philosophy, OpenIaC abstracts away complex kernel tuning, load balancers, LVM storage configuration, and air-gapped dependency chains behind sensible defaults—allowing anyone to deploy production-ready platforms effortlessly.
 
-Building infrastructure from scratch is hard, especially when you are completely isolated from the internet (air-gapped).
+## Supported Tier-1 Platforms
 
-- **Fully Offline Ready**: Our framework provides packager scripts that bundle every single dependency (OS packages, Python dependencies, Docker images, Helm charts).
-- **KVM & Baremetal Testing**: Test your infrastructure code locally with KVM and baremetal before applying to real nodes.
-- **Modular Add-ons**: Deploy only what you need, from core kubernetes to complex data services like Galera or Harbor.
+### 1. On-Premise & Private Cloud (Ansible Engine)
+Standardized on **RHEL / Rocky Linux** with full **Air-gapped (Offline)** and **Online** support:
+- **`k8s` (Standard Kubernetes)**: Upstream CNCF Kubernetes using `kubeadm`, `containerd`, and `Calico` CNI.
+- **`k3s` (Lightweight Kubernetes)**: SUSE Rancher K3s single-binary cluster for edge and rapid environments.
+- **`openshift` (OpenShift / OKD)**: Unified role supporting both free open-source **OKD** (default) and commercial **Red Hat OpenShift (OCP)** via `openshift_edition`, complete with a built-in HAProxy load balancer.
+- **`kubevirt` (Cloud-Native Virtualization)**: Modern replacement for legacy oVirt/RHV to run KVM virtual machines on Kubernetes (includes automatic software emulation fallback for nested VMs).
+- **`openstack` (Private Cloud IaaS)**: Containerized OpenStack deployment powered by `Kolla-Ansible` with automated Cinder LVM and Neutron networking.
+
+### 2. Public Cloud Blueprints (Terraform Engine)
+Modular HCL blueprints with sensible defaults for immediate provisioning:
+- **`aws` (Amazon EKS)**: Dedicated Multi-AZ VPC, IAM security roles, EKS Control Plane, and Managed Node Group.
+- **`gcp` (Google GKE)**: Dedicated VPC subnetwork, regional GKE Control Plane, and Managed Node Pool.
+- **`azure` (Azure AKS)**: Resource Group, isolated VNet subnet, and AKS Cluster with SystemAssigned Managed Identity.
+
+## Core Design Principles
+
+- **One-Command Execution**: Use simple root `Makefile` targets (`make k8s`, `make openshift`, `make aws-apply`) without memorizing complex CLI flags.
+- **Built-in Invisible Helpers**: Load balancers (HAProxy), Cinder LVM volume groups, dummy Neutron NICs, and automatic kubeconfig exports happen transparently behind the scenes.
+- **Zero External Ansible Dependencies**: Written strictly with `ansible.builtin` FQCN modules so playbooks run out-of-the-box on minimal `ansible-core` installations.

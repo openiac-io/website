@@ -1,15 +1,43 @@
-# Offline Air-gapped Deployment
+# Offline Air-Gapped Deployment
 
-OpenIaC provides fully open-source, modular packager scripts for true 100% offline environments.
+OpenIaC includes a modular **Offline Artifact Packager** designed for strict air-gapped data centers, financial institutions, and defense environments without internet access.
 
-## How it works
+## 3-Step Air-Gapped Workflow
 
-1. **Packager Stage**: Run the `packager/build_offline_tarball.sh` script on a bastion machine with internet access (must match the target baremetal OS). It automatically downloads and bundles all RPMs, binaries, and container images into a single tarball.
-2. **Transfer Stage**: Move the generated tarball via secure media (USB, secure file transfer) into the air-gapped environment.
-3. **Deploy Stage**: Extract the tarball in the `packager/` directory on your bootstrap node and run the standard Ansible deployment playbooks. The playbooks will automatically detect the offline artifacts and skip external downloads.
+### Step 1: Bundle Offline Artifacts (On an Internet-Connected Bastion)
+Run the packager command on an internet-connected **RHEL / Rocky Linux** machine matching your target OS architecture. It automatically collects all required binaries, RPM dependencies, Python wheels, Ansible Galaxy collections, and container images into a single portable `.tar.gz` archive:
 
-## Supported Solutions
+```bash
+# Bundle artifacts for your target platform
+make pack-k8s
+make pack-k3s
+make pack-openshift
+make pack-kubevirt
+make pack-openstack
+```
 
-- Kubernetes (K3s)
-- Ceph (Quincy, Reef, Squid)
-- OpenStack (Bobcat, Caracal) - *Architecture in progress*
+### Step 2: Transfer & Extract in the Air-Gapped Environment
+Copy the generated `openiac-<platform>-offline-el*.tar.gz` archive to your air-gapped bootstrap node and extract it inside the `packager/` directory:
+
+```bash
+cd openiac/packager
+tar -xzf openiac-k8s-offline-el9.tar.gz
+```
+
+### Step 3: Enable Air-Gapped Mode & Deploy
+Set `airgapped_mode: true` in `ansible/inventories/<platform>-sample/group_vars/all.yml` and run the standard deployment command:
+
+```bash
+cd ..
+make k8s
+```
+
+## Supported Air-Gapped Platforms
+
+| Platform | Bundled Offline Artifacts |
+| :--- | :--- |
+| **`k8s`** | Containerd & Kubeadm RPMs, Calico CNI manifest, Control Plane container images |
+| **`k3s`** | K3s binary, `k3s-airgap-images-amd64.tar`, SELinux & iptables RPMs |
+| **`openshift`** | `openshift-install`, `oc` client bundle, HAProxy & Podman RPMs |
+| **`kubevirt`** | KubeVirt & CDI Operator manifests, `virtctl` CLI binary |
+| **`openstack`** | `kolla-ansible` & `python-openstackclient` wheels, `openstack.kolla` Galaxy tarball, LVM/Podman RPMs |

@@ -1,18 +1,44 @@
-# Getting Started (Local Test)
+# Getting Started (Local Vagrant Testbeds)
 
-Before touching real hardware, OpenIaC provides a KVM and baremetal-based local test environment.
+Before deploying to physical bare-metal servers or public cloud accounts, you can test every on-premise OpenIaC platform locally using our pre-configured multi-node **Vagrant + VirtualBox** environments running **Rocky Linux**.
 
 ## Prerequisites
 
-- KVM / QEMU
-- Ansible
+- [VirtualBox](https://www.virtualbox.org/)
+- [Vagrant](https://www.vagrantup.com/)
+- Git
 
-## Bootstrapping Local Nodes
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/openiac-io/openiac.git
-cd openiac/kvm
-# KVM provision script (coming soon)
+cd openiac
 ```
 
-Once the nodes are up, you can run our playbooks against them to verify changes safely.
+## 2. Launch a Local Multi-Node Cluster
+
+Choose the testbed matching the platform you want to evaluate:
+
+```bash
+# Option A: Lightweight Kubernetes (K3s) — 3 Nodes
+cd vagrant/k3s-cluster && vagrant up
+
+# Option B: Standard Upstream Kubernetes (K8s & KubeVirt) — 3 Nodes
+cd vagrant/k8s-cluster && vagrant up
+
+# Option C: OpenShift / OKD — Bastion + Control Plane + Worker
+cd vagrant/openshift-cluster && vagrant up
+
+# Option D: OpenStack Private Cloud (Kolla-Ansible) — Controller + Compute (with 40GB Cinder Disk)
+cd vagrant/openstack-cluster && vagrant up
+```
+
+## 3. Run One-Command Deployment Inside the VM
+
+The host `openiac` repository is automatically mounted at `/openiac` inside every Vagrant VM:
+
+```bash
+vagrant ssh cp-01
+cd /openiac
+make k8s
+```
