@@ -1,0 +1,48 @@
+# Public Cloud Provisioning (Terraform)
+
+In addition to on-premise automation, OpenIaC provides clean, modular **Terraform (HCL)** production blueprints for the three major public cloud providers: **AWS (Amazon EKS)**, **GCP (Google GKE)**, and **Azure (Azure AKS)**.
+
+Every blueprint follows a standardized file layout (`versions.tf`, `variables.tf`, `main.tf`, `outputs.tf`) and ships with sensible defaults for zero-config execution.
+
+## 1. Amazon Web Services (`terraform/aws`)
+
+Provisions a dedicated Multi-AZ VPC, public subnets with Kubernetes ELB tags, IAM cluster/node roles, Amazon EKS Control Plane, and a Managed Worker Node Group.
+
+```bash
+# Preview and apply AWS EKS platform
+make aws-plan
+make aws-apply
+
+# Configure local kubectl access (outputted automatically after apply)
+aws eks update-kubeconfig --region us-west-2 --name openiac-eks-prod
+```
+
+## 2. Google Cloud Platform (`terraform/gcp`)
+
+Provisions a custom VPC network, regional subnetwork, Google Kubernetes Engine (GKE) Control Plane, and a separately managed Compute Engine node pool.
+
+```bash
+# Preview and apply GCP GKE platform
+make gcp-plan
+make gcp-apply
+
+# Configure local kubectl access
+gcloud container clusters get-credentials openiac-gke-prod --region us-central1 --project <your-project-id>
+```
+
+## 3. Microsoft Azure (`terraform/azure`)
+
+Provisions an Azure Resource Group, Virtual Network (VNet), worker node subnet, and Azure Kubernetes Service (AKS) cluster with SystemAssigned Managed Identity.
+
+```bash
+# Preview and apply Azure AKS platform
+make azure-plan
+make azure-apply
+
+# Configure local kubectl access
+az aks get-credentials --resource-group openiac-aks-prod-rg --name openiac-aks-prod
+```
+
+## Customizing Variables
+
+All variables include pre-configured defaults in `terraform/<cloud>/variables.tf`. To override settings (such as region, Kubernetes version, CIDR blocks, or instance types) without modifying code, pass `-var` flags or create a local `terraform.tfvars` file.
