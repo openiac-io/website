@@ -2,7 +2,7 @@
 
 **OpenIaC** is an enterprise-grade, 100% open-source Infrastructure as Code (IaC) framework designed to provision **Container, Cloud-Native Virtualization, and Private/Public Cloud Platforms** with a single command.
 
-Built with a **Zero-Knowledge UX** philosophy, OpenIaC abstracts away complex kernel tuning, load balancers, LVM storage configuration, and air-gapped dependency chains behind sensible defaults—allowing anyone to deploy production-ready platforms effortlessly.
+Built with a **Zero-Knowledge UX** philosophy, OpenIaC abstracts away complex kernel tuning, agent-based ISO generation, LVM storage configuration, and air-gapped dependency chains behind sensible defaults—allowing anyone to deploy production-ready platforms effortlessly.
 
 ## Supported Tier-1 Platforms
 
@@ -10,7 +10,7 @@ Built with a **Zero-Knowledge UX** philosophy, OpenIaC abstracts away complex ke
 Standardized on **RHEL / Rocky Linux** with full **Air-gapped (Offline)** and **Online** support:
 - **`k8s` (Standard Kubernetes)**: Upstream CNCF Kubernetes using `kubeadm`, `containerd`, and `Calico` CNI.
 - **`k3s` (Lightweight Kubernetes)**: SUSE Rancher K3s single-binary cluster for edge and rapid environments.
-- **`openshift` (OpenShift / OKD)**: Unified role supporting both free open-source **OKD** (default) and commercial **Red Hat OpenShift (OCP)** via `openshift_edition`, complete with a built-in HAProxy load balancer.
+- **`openshift` (OpenShift / OKD)**: Unified role supporting both free open-source **OKD** (default) and commercial **Red Hat OpenShift (OCP)** via `openshift_edition`, powered by the modern **OpenShift 4.12+ Agent-based Installer** (`nmstate` & built-in Keepalived/HAProxy VIPs).
 - **`kubevirt` (Cloud-Native Virtualization)**: Modern replacement for legacy oVirt/RHV to run KVM virtual machines on Kubernetes (includes automatic software emulation fallback for nested VMs).
 - **`openstack` (Private Cloud IaaS)**: Containerized OpenStack deployment powered by `Kolla-Ansible` with automated Cinder LVM and Neutron networking.
 
@@ -23,5 +23,6 @@ Modular HCL blueprints with sensible defaults for immediate provisioning:
 ## Core Design Principles
 
 - **One-Command Execution**: Use simple root `Makefile` targets (`make k8s`, `make openshift`, `make aws-apply`) without memorizing complex CLI flags.
-- **Built-in Invisible Helpers**: Load balancers (HAProxy), Cinder LVM volume groups, dummy Neutron NICs, and automatic kubeconfig exports happen transparently behind the scenes.
+- **Pluggable Engine Dispatch Pattern**: Every on-premise role separates dynamic engine routing (`tasks/main.yml`) from installation logic (`tasks/install_<method>.yml`), allowing future installation engines to be added without breaking changes.
+- **Built-in Invisible Helpers**: Bootable OpenShift Agent ISOs with built-in VIPs, Cinder LVM volume groups, dummy Neutron NICs, and automatic kubeconfig exports happen transparently behind the scenes.
 - **Zero External Ansible Dependencies**: Written strictly with `ansible.builtin` FQCN modules so playbooks run out-of-the-box on minimal `ansible-core` installations.
