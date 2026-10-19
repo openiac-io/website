@@ -45,5 +45,5 @@ make openstack
 ## What Happens Automatically?
 
 - **Base OS Hardening & Kernel Tuning**: Disables swap, configures SELinux permissive mode, loads `overlay` and `br_netfilter` modules, and applies CRI sysctl network parameters.
-- **Built-in Invisible Helpers**: Automatically provisions HAProxy for OpenShift, LVM `cinder-volumes` and Neutron dummy interfaces for OpenStack, and QEMU emulation fallback for KubeVirt when `/dev/kvm` is absent.
+- **Built-in Invisible Helpers**: Automatically generates bootable OpenShift 4.12+ Agent ISOs (`agent.x86_64.iso`) with `nmstate` static networking and built-in VIPs, configures LVM `cinder-volumes` and Neutron dummy interfaces for OpenStack, and enables QEMU emulation fallback for KubeVirt when `/dev/kvm` is absent.
 - **Automatic Kubeconfig & Credentials**: Configures `~/.kube/config` on control plane nodes and `/etc/kolla/admin-openrc.sh` for OpenStack immediately after installation.

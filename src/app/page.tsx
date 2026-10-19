@@ -37,8 +37,8 @@ const ON_PREM_PLATFORMS = [
     name: 'OpenShift / OKD',
     code: 'openshift',
     command: 'make openshift',
-    stack: 'OKD (Default) · Red Hat OCP',
-    desc: 'Unified enterprise PaaS supporting both free open-source OKD and commercial Red Hat OCP with built-in HAProxy.',
+    stack: 'OKD (Default) · Red Hat OCP · Agent ISO',
+    desc: 'Unified enterprise PaaS supporting free open-source OKD and Red Hat OCP via the modern OpenShift 4.12+ Agent-based Installer with built-in VIPs.',
     badge: 'Air-gapped Ready',
   },
   {
@@ -166,7 +166,7 @@ export default function Home() {
                 </div>
                 <div>
                   <span className="text-brand-400">$</span> <span className="text-foreground">make openshift</span>{' '}
-                  <span className="text-muted-foreground/70"># OKD / Red Hat OpenShift + Built-in HAProxy</span>
+                  <span className="text-muted-foreground/70"># OKD / Red Hat OpenShift (Agent-based Installer)</span>
                 </div>
                 <div>
                   <span className="text-brand-400">$</span> <span className="text-foreground">make kubevirt</span>{' '}
@@ -276,7 +276,7 @@ export default function Home() {
               Designed for Zero-Knowledge UX
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Even if you have never configured kernel modules, HAProxy load balancers, or LVM storage groups before,
+              Even if you have never configured kernel modules, OpenShift Agent ISOs, or LVM storage groups before,
               OpenIaC handles the entire lifecycle automatically behind the scenes.
             </p>
           </div>
@@ -291,7 +291,7 @@ export default function Home() {
               {
                 step: '02',
                 title: 'Built-in Invisible Helpers',
-                desc: 'HAProxy load balancers, Cinder LVM volume groups, Neutron dummy interfaces, and KubeVirt emulation fallbacks are embedded automatically.',
+                desc: 'OpenShift Agent ISO generation with nmstate & built-in VIPs, Cinder LVM volume groups, Neutron dummy interfaces, and KubeVirt emulation fallbacks are embedded automatically.',
               },
               {
                 step: '03',
@@ -338,8 +338,8 @@ export default function Home() {
               },
               {
                 icon: <Layers className="h-6 w-6 text-brand-400" />,
-                title: 'Vagrant Multi-Node Testbeds',
-                desc: 'Validate every on-premise platform locally on VirtualBox using pre-configured multi-node Vagrantfiles before deploying to production hardware.',
+                title: 'Pluggable Engine & Vagrant Ready',
+                desc: 'Every role decouples routing from installation engines (install_<method>.yml) for future-proof extensibility, validated with local multi-node Vagrant testbeds.',
               },
             ].map((feature, i) => (
               <div
