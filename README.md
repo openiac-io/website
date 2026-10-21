@@ -1,31 +1,72 @@
-# OpenIaC Official Website & Documentation Portal
+# OpenIaC — Official Website & Documentation Portal
 
-This repository contains the official landing page and MDX documentation portal for **[OpenIaC](https://github.com/openiac-io/openiac)** — the Enterprise Hybrid Cloud & Container Platform Framework.
+[![OpenIaC Website CI](https://github.com/openiac-io/website/actions/workflows/ci.yml/badge.svg)](https://github.com/openiac-io/website/actions/workflows/ci.yml)
 
-## Tech Stack
+This repository hosts the official landing page and MDX developer documentation portal for **[OpenIaC](https://github.com/openiac-io/openiac)** — the Enterprise Hybrid Cloud & Container Platform Provisioning Framework.
 
-- **Framework**: Next.js (App Router) + TypeScript
-- **Documentation**: `@next/mdx` + Tailwind Typography
-- **Styling**: Tailwind CSS v4 (Dark Mode Native)
-- **Icons & Motion**: Lucide React + Framer Motion
+---
 
-## Local Development
+## 🎯 Overview
+
+OpenIaC provides a unified, **Zero-Knowledge UX** experience for provisioning production-grade container, virtualization, and private/public cloud platforms with a single command (`make <platform>`). This documentation portal covers both **Online** and **Air-Gapped (Offline)** workflows across all supported Tier-1 platforms:
+
+- **On-Premise & Private Cloud (Ansible Engine)**:
+  - **Standard Kubernetes (`k8s`)**: Upstream `kubeadm` + `containerd` + `Calico` CNI
+  - **Lightweight Kubernetes (`k3s`)**: SUSE Rancher K3s single-binary cluster
+  - **OpenShift / OKD (`openshift`)**: Unified OKD & Red Hat OCP via the **OpenShift 4.12+ Agent-based Installer** (`nmstate` & built-in VIPs)
+  - **Cloud-Native Virtualization (`kubevirt`)**: KVM VM virtualization on Kubernetes (`KubeVirt` + `CDI` + `virtctl`)
+  - **OpenStack Private Cloud (`openstack`)**: Containerized private cloud IaaS via `Kolla-Ansible`
+- **Public Cloud Blueprints (Terraform Engine)**:
+  - **Amazon Web Services (`aws`)**: Multi-AZ VPC + IAM + Amazon EKS
+  - **Google Cloud Platform (`gcp`)**: Dedicated VPC/Subnet + Regional Google GKE
+  - **Microsoft Azure (`azure`)**: VNet/Subnet + Azure AKS with SystemAssigned Managed Identity
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router) + React 19 + TypeScript
+- **Documentation Engine**: `@next/mdx` + `@tailwindcss/typography`
+- **Styling & UI**: Tailwind CSS v4 (Dark Mode Native) + `lucide-react` + `framer-motion`
+- **CI / Quality Gate**: GitHub Actions (`.github/workflows/ci.yml`) automated production build & TypeScript/MDX verification
+
+---
+
+## 📂 Repository Structure
+
+```text
+website/
+├── .github/workflows/ci.yml # Automated CI build & TypeScript/MDX verification
+├── src/
+│   ├── app/
+│   │   ├── page.tsx         # Main landing page (Hero, Tier-1 Matrix, Architecture)
+│   │   └── docs/            # Developer Documentation Portal (MDX)
+│   │       ├── page.mdx                    # Introduction & Core Principles
+│   │       ├── getting-started/page.mdx    # Local Vagrant Multi-Node Testbeds
+│   │       ├── online-deployment/page.mdx  # On-Premise One-Command Deployment
+│   │       ├── offline-deployment/page.mdx # Air-Gapped Artifact Packaging & Install
+│   │       └── public-cloud/page.mdx       # AWS EKS, GCP GKE, Azure AKS (Terraform)
+│   └── components/layout/   # Global Navbar & Footer components
+└── package.json             # Project dependencies and build scripts
+```
+
+---
+
+## 🚀 Local Development & Verification
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 npm install
 
-# Start development server at http://localhost:3000
+# 2. Start local development server (http://localhost:3000)
 npm run dev
 
-# Build for production verification
+# 3. Run production build & TypeScript/MDX verification
 npm run build
 ```
 
-## Documentation Structure
+---
 
-- `/docs`: Architecture overview and Tier-1 platform matrix
-- `/docs/getting-started`: Local multi-node Vagrant testbed guide
-- `/docs/online-deployment`: One-command on-premise deployment (`k8s`, `k3s`, `openshift`, `kubevirt`, `openstack`)
-- `/docs/offline-deployment`: Air-gapped packager and offline deployment workflow
-- `/docs/public-cloud`: Terraform blueprints for AWS (EKS), GCP (GKE), and Azure (AKS)
+## 📄 License
+
+Distributed under the **Apache-2.0 License**. See the core **[openiac-io/openiac](https://github.com/openiac-io/openiac)** repository for framework source code and provisioning playbooks.
