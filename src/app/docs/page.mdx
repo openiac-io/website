@@ -2,7 +2,18 @@
 
 **OpenIaC** is an enterprise-grade, 100% open-source Infrastructure as Code (IaC) framework designed to provision **Container, Cloud-Native Virtualization, and Private/Public Cloud Platforms** with a single command.
 
-Built with a **Zero-Knowledge UX** philosophy, OpenIaC abstracts away complex kernel tuning, agent-based ISO generation, LVM storage configuration, and air-gapped dependency chains behind sensible defaults—allowing anyone to deploy production-ready platforms effortlessly.
+Built with a **Zero-Knowledge UX** philosophy and a **3-Layer Composable Stack Architecture**, OpenIaC abstracts away complex kernel tuning, agent-based ISO generation, LVM storage configuration, Layer-3 operator lifecycles, and air-gapped dependency chains behind sensible defaults—allowing anyone to deploy and manage production-ready platforms effortlessly.
+
+## 3-Layer Composable Architecture
+
+OpenIaC organizes enterprise infrastructure into three clean, modular layers:
+
+1. **Layer 1 — Base OS & Underlay Infrastructure (`base_os`)**:
+   - Hardens **RHEL / Rocky Linux** bare-metal servers or VMs (disables swap, configures SELinux, loads `overlay` and `br_netfilter` kernel modules, and tunes CRI sysctl parameters).
+2. **Layer 2 — Core Container & Cloud Platforms**:
+   - Provisions your primary container orchestrator (`k8s`, `k3s`, `openshift`), private cloud IaaS (`openstack`), or public cloud cluster (`aws`, `gcp`, `azure`).
+3. **Layer 3 — Composable Platform Add-ons & Day-2 Lifecycle (`kubevirt`)**:
+   - Deploys, upgrades, or cleanly uninstalls workload operators (such as **KubeVirt / OpenShift Virtualization**) on top of any Layer-2 Kubernetes (`k8s`/`k3s`) or `openshift` cluster—or runs in **Turnkey All-in-One Mode** on empty servers.
 
 ## Supported Tier-1 Platforms
 
@@ -11,7 +22,7 @@ Standardized on **RHEL / Rocky Linux** with full **Air-gapped (Offline)** and **
 - **`k8s` (Standard Kubernetes)**: Upstream CNCF Kubernetes using `kubeadm`, `containerd`, and `Calico` CNI.
 - **`k3s` (Lightweight Kubernetes)**: SUSE Rancher K3s single-binary cluster for edge and rapid environments.
 - **`openshift` (OpenShift / OKD)**: Unified role supporting both free open-source **OKD** (default) and commercial **Red Hat OpenShift (OCP)** via `openshift_edition`, powered by the modern **OpenShift 4.12+ Agent-based Installer** (`nmstate` & built-in API/Ingress VIPs).
-- **`kubevirt` (Cloud-Native Virtualization)**: Modern replacement for legacy oVirt/RHV to run KVM virtual machines on Kubernetes (includes automatic software emulation fallback for nested VMs).
+- **`kubevirt` (Cloud-Native Virtualization)**: Modern replacement for legacy oVirt/RHV to run KVM virtual machines on `k8s`, `k3s`, or `openshift` (supports Turnkey All-in-One mode, Composable Add-on mode, and automatic QEMU software emulation fallback for nested VMs).
 - **`openstack` (Private Cloud IaaS)**: Containerized OpenStack deployment powered by `Kolla-Ansible` with automated Cinder LVM and Neutron networking.
 
 ### 2. Public Cloud Blueprints (Terraform Engine)
@@ -22,7 +33,7 @@ Modular HCL blueprints with sensible defaults for immediate provisioning:
 
 ## Core Design Principles
 
-- **One-Command Execution**: Use simple root `Makefile` targets (`make k8s`, `make openshift`, `make aws-apply`) without memorizing complex CLI flags.
-- **Pluggable Engine Dispatch Pattern**: Every on-premise role separates dynamic engine routing (`tasks/main.yml`) from installation logic (`tasks/install_<method>.yml`), allowing future installation engines to be added without breaking changes.
+- **One-Command Execution**: Use simple root `Makefile` targets (`make k8s`, `make openshift`, `make kubevirt`, `make aws-apply`) without memorizing complex CLI flags.
+- **Pluggable Lifecycle & Engine Dispatch Pattern**: Every on-premise role separates dynamic routing (`tasks/main.yml`) from lifecycle/engine modules (`tasks/install_<method>.yml`, `tasks/uninstall_<method>.yml`), allowing future installation engines and Day-2 actions to be added without breaking changes.
 - **Built-in Invisible Helpers**: Bootable OpenShift Agent ISOs with built-in VIPs, Cinder LVM volume groups, dummy Neutron NICs, and automatic kubeconfig exports happen transparently behind the scenes.
 - **Zero External Ansible Dependencies**: Written strictly with `ansible.builtin` FQCN modules so playbooks run out-of-the-box on minimal `ansible-core` installations.

@@ -45,9 +45,9 @@ const ON_PREM_PLATFORMS = [
     name: 'Cloud-Native VM Virtualization',
     code: 'kubevirt',
     command: 'make kubevirt',
-    stack: 'KubeVirt · CDI · virtctl',
-    desc: 'Modern replacement for legacy oVirt/RHV. Run and live-migrate KVM virtual machines directly on Kubernetes.',
-    badge: 'Auto-Emulation',
+    stack: 'KubeVirt · CDI · Turnkey & Add-on',
+    desc: 'Turnkey all-in-one hypervisor or composable Layer-3 add-on for K8s, K3s, and OpenShift with full install/upgrade/uninstall lifecycle.',
+    badge: 'Turnkey & Add-on',
   },
   {
     name: 'OpenStack Private Cloud',
@@ -170,7 +170,7 @@ export default function Home() {
                 </div>
                 <div>
                   <span className="text-brand-400">$</span> <span className="text-foreground">make kubevirt</span>{' '}
-                  <span className="text-muted-foreground/70"># Cloud-Native KVM Virtualization on K8s</span>
+                  <span className="text-muted-foreground/70"># Turnkey K8s + KubeVirt (or Add-on on K8s / OpenShift)</span>
                 </div>
                 <div>
                   <span className="text-brand-400">$</span> <span className="text-foreground">make openstack</span>{' '}
@@ -338,8 +338,8 @@ export default function Home() {
               },
               {
                 icon: <Layers className="h-6 w-6 text-brand-400" />,
-                title: 'Pluggable Engine & Vagrant Ready',
-                desc: 'Every role decouples routing from installation engines (install_<method>.yml) for future-proof extensibility, validated with local multi-node Vagrant testbeds.',
+                title: '3-Layer Composable & Day-2 Ready',
+                desc: 'Every role decouples routing from lifecycle/engine modules (install_<method>.yml, uninstall_<method>.yml) for seamless upgrades, add-ons, and Vagrant validation.',
               },
             ].map((feature, i) => (
               <div

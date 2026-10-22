@@ -8,13 +8,13 @@ This repository hosts the official landing page and MDX developer documentation 
 
 ## 🎯 Overview
 
-OpenIaC provides a unified, **Zero-Knowledge UX** experience for provisioning production-grade container, virtualization, and private/public cloud platforms with a single command (`make <platform>`). This documentation portal covers both **Online** and **Air-Gapped (Offline)** workflows across all supported Tier-1 platforms:
+OpenIaC provides a unified, **Zero-Knowledge UX** experience for provisioning production-grade container, virtualization, and private/public cloud platforms with a single command (`make <platform>`). This documentation portal covers **Online Deployment**, **Layer-3 Composable Add-ons & Day-2 Lifecycle**, and **Air-Gapped (Offline)** workflows across all supported Tier-1 platforms:
 
 - **On-Premise & Private Cloud (Ansible Engine)**:
   - **Standard Kubernetes (`k8s`)**: Upstream `kubeadm` + `containerd` + `Calico` CNI
   - **Lightweight Kubernetes (`k3s`)**: SUSE Rancher K3s single-binary cluster
   - **OpenShift / OKD (`openshift`)**: Unified OKD & Red Hat OCP via the **OpenShift 4.12+ Agent-based Installer** (`nmstate` & built-in VIPs)
-  - **Cloud-Native Virtualization (`kubevirt`)**: KVM VM virtualization on Kubernetes (`KubeVirt` + `CDI` + `virtctl`)
+  - **Cloud-Native Virtualization (`kubevirt`)**: Turnkey or Add-on KVM virtualization on `k8s`, `k3s`, or `openshift` (`KubeVirt` + `CDI` + `virtctl`) with full Day-2 lifecycle (`present` / `absent` / upgrade)
   - **OpenStack Private Cloud (`openstack`)**: Containerized private cloud IaaS via `Kolla-Ansible`
 - **Public Cloud Blueprints (Terraform Engine)**:
   - **Amazon Web Services (`aws`)**: Multi-AZ VPC + IAM + Amazon EKS
@@ -41,11 +41,12 @@ website/
 │   ├── app/
 │   │   ├── page.tsx         # Main landing page (Hero, Tier-1 Matrix, Architecture)
 │   │   └── docs/            # Developer Documentation Portal (MDX)
-│   │       ├── page.mdx                    # Introduction & Core Principles
-│   │       ├── getting-started/page.mdx    # Local Vagrant Multi-Node Testbeds
-│   │       ├── online-deployment/page.mdx  # On-Premise One-Command Deployment
-│   │       ├── offline-deployment/page.mdx # Air-Gapped Artifact Packaging & Install
-│   │       └── public-cloud/page.mdx       # AWS EKS, GCP GKE, Azure AKS (Terraform)
+│   │       ├── page.mdx                        # Introduction & 3-Layer Stack Overview
+│   │       ├── getting-started/page.mdx        # Local Vagrant Multi-Node Testbeds
+│   │       ├── online-deployment/page.mdx      # On-Premise One-Command Deployment
+│   │       ├── addons-and-lifecycle/page.mdx   # Layer-3 Add-ons & Day-2 Lifecycle Guide
+│   │       ├── offline-deployment/page.mdx     # Air-Gapped Artifact Packaging & Install
+│   │       └── public-cloud/page.mdx           # AWS EKS, GCP GKE, Azure AKS (Terraform)
 │   └── components/layout/   # Global Navbar & Footer components
 └── package.json             # Project dependencies and build scripts
 ```
