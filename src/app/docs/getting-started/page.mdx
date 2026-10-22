@@ -1,44 +1,109 @@
 # Getting Started (Local Vagrant Testbeds)
 
-Before deploying to physical bare-metal servers or public cloud accounts, you can test every on-premise OpenIaC platform locally using our pre-configured multi-node **Vagrant + VirtualBox** environments running **Rocky Linux**.
+Before deploying to physical bare-metal servers or public cloud accounts, you can test every on-premise OpenIaC platform locally using our pre-configured multi-node **Vagrant + VirtualBox** environments running **Rocky Linux 9**.
+
+All commands below are written one per line for **100% copy-paste compatibility** across **Windows PowerShell**, **Windows CMD**, **macOS (`zsh`)**, and **Linux (`bash`)**.
 
 ## Prerequisites
 
 - [VirtualBox](https://www.virtualbox.org/)
 - [Vagrant](https://www.vagrantup.com/)
-- Git
+- [Git](https://git-scm.com/)
+
+---
 
 ## 1. Clone the Repository
+
+Open your terminal (Windows PowerShell, macOS Terminal, or Linux Shell) and run:
 
 ```bash
 git clone https://github.com/openiac-io/openiac.git
 cd openiac
 ```
 
-## 2. Launch a Local Multi-Node Cluster
+---
 
-Choose the testbed matching the platform you want to evaluate:
+## 2. Choose & Launch Your Local Multi-Node Cluster
+
+The host `openiac` directory is automatically shared at `/openiac` inside every Vagrant VM, and the control node automatically bootstraps `make`, `ansible-core`, and `sshpass`.
+
+### Option A: Standard Upstream Kubernetes & KubeVirt (`k8s` / `kubevirt` — 3 Nodes)
+
+1. Boot the 3-node cluster (`cp-01`, `worker-01`, `worker-02`) from your host terminal:
+   ```bash
+   cd vagrant/k8s-cluster
+   vagrant up
+   vagrant ssh cp-01
+   ```
+2. Inside the `cp-01` VM terminal, run a single command to deploy your cluster:
+   ```bash
+   cd /openiac
+   make k8s
+   ```
+   *(Tip: Run `make kubevirt` instead if you want to deploy **Standard K8s + KubeVirt VM Virtualization** all at once!)*
+3. Verify your cluster status:
+   ```bash
+   kubectl get nodes -o wide
+   ```
+
+---
+
+### Option B: Lightweight Kubernetes (`k3s` — 3 Nodes)
+
+1. Boot the 3-node K3s cluster (`cp-01`, `worker-01`, `worker-02`) from your host terminal:
+   ```bash
+   cd vagrant/k3s-cluster
+   vagrant up
+   vagrant ssh cp-01
+   ```
+2. Inside the `cp-01` VM terminal, run:
+   ```bash
+   cd /openiac
+   make k3s
+   ```
+3. Verify your K3s cluster status:
+   ```bash
+   kubectl get nodes -o wide
+   ```
+
+---
+
+### Option C: OpenShift / OKD (`openshift` — Bastion + Control Plane + Worker)
+
+1. Boot the OpenShift testbed (`bastion-01`, `cp-01`, `worker-01`) from your host terminal:
+   ```bash
+   cd vagrant/openshift-cluster
+   vagrant up
+   vagrant ssh bastion-01
+   ```
+2. Inside the `bastion-01` VM terminal, run:
+   ```bash
+   cd /openiac
+   make openshift
+   ```
+
+---
+
+### Option D: OpenStack Private Cloud (`openstack` — Controller + Compute with 40GB Cinder Disk)
+
+1. Boot the OpenStack testbed (`controller-01`, `compute-01`) from your host terminal:
+   ```bash
+   cd vagrant/openstack-cluster
+   vagrant up
+   vagrant ssh controller-01
+   ```
+2. Inside the `controller-01` VM terminal, run:
+   ```bash
+   cd /openiac
+   make openstack
+   ```
+
+---
+
+## 3. Clean Up Local VMs After Testing
+
+When you are finished testing, exit the VM (`exit`) and destroy the VirtualBox VMs from the same `vagrant/<platform>-cluster` directory on your host:
 
 ```bash
-# Option A: Lightweight Kubernetes (K3s) — 3 Nodes
-cd vagrant/k3s-cluster && vagrant up
-
-# Option B: Standard Upstream Kubernetes (K8s & KubeVirt) — 3 Nodes
-cd vagrant/k8s-cluster && vagrant up
-
-# Option C: OpenShift / OKD — Bastion + Control Plane + Worker
-cd vagrant/openshift-cluster && vagrant up
-
-# Option D: OpenStack Private Cloud (Kolla-Ansible) — Controller + Compute (with 40GB Cinder Disk)
-cd vagrant/openstack-cluster && vagrant up
-```
-
-## 3. Run One-Command Deployment Inside the VM
-
-The host `openiac` repository is automatically mounted at `/openiac` inside every Vagrant VM:
-
-```bash
-vagrant ssh cp-01
-cd /openiac
-make k8s
+vagrant destroy -f
 ```
