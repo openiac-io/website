@@ -1,49 +1,97 @@
 # On-Premise Platform Deployment
 
-OpenIaC provides a unified, zero-config workflow for deploying container, virtualization, and private cloud platforms on **RHEL / Rocky Linux** hosts.
+OpenIaC provides a unified, zero-config workflow for deploying container, virtualization, and private cloud platforms on **RHEL / Rocky Linux** hosts. Even if you have never configured kernel modules or cluster networking before, you can follow the copy-paste steps below from top to bottom.
 
-## 1. Configure Target Host IPs
+---
 
-Update the IP addresses of your target servers in the corresponding sample inventory under `ansible/inventories/<platform>-sample/hosts.ini`:
+## Step 1: Configure Target Server IP Addresses
+
+Open the sample `hosts.ini` inventory file for the platform you want to deploy (`ansible/inventories/<platform>-sample/hosts.ini`) and update the IP addresses (`ansible_host`) and SSH credentials (`ansible_user` / `ansible_password`) to match your servers:
 
 ```ini
 # Example: ansible/inventories/k8s-sample/hosts.ini
-[all_nodes]
-cp-01 ansible_host=192.168.56.10
-worker-01 ansible_host=192.168.56.20
-worker-02 ansible_host=192.168.56.21
 
+# 1. Physical or Virtual Server IP Addresses
+[all_nodes]
+cp-01 ansible_host=192.168.56.10 ansible_user=root
+worker-01 ansible_host=192.168.56.20 ansible_user=root
+worker-02 ansible_host=192.168.56.21 ansible_user=root
+
+# 2. Cluster Role Assignment
 [k8s_control_plane]
 cp-01
 
 [k8s_workers]
 worker-01
 worker-02
+
+[k8s_cluster:children]
+k8s_control_plane
+k8s_workers
 ```
 
-## 2. Run One-Command Deployment
+---
 
-From the root of the `openiac` repository, execute the `make` target for your desired platform:
+## Step 2: Run One-Command Platform Deployment
+
+From the root directory of `openiac`, run the single `make` command for your desired platform:
+
+### Option A: Standard Upstream Kubernetes (`k8s`)
+Deploys an upstream CNCF Kubernetes cluster with `kubeadm`, `containerd` (`SystemdCgroup = true`), and `Calico` CNI:
 
 ```bash
-# Deploy Standard Upstream Kubernetes (Kubeadm + Containerd + Calico)
 make k8s
+```
 
-# Deploy Lightweight Kubernetes (SUSE Rancher K3s)
+After completion, verify your cluster directly on `cp-01`:
+```bash
+kubectl get nodes -o wide
+```
+
+### Option B: Lightweight Kubernetes (`k3s`)
+Deploys a fast, single-binary SUSE Rancher K3s cluster (ideal for edge nodes, small footprints, or rapid testing):
+
+```bash
 make k3s
+```
 
-# Deploy Cloud-Native VM Virtualization (KubeVirt + CDI + virtctl)
+### Option C: OpenShift / OKD (`openshift` — 4.12+ Agent-Based Standard)
+Generates a self-bootstrapping **Agent-based Installer ISO (`agent.x86_64.iso`)** with static `nmstate` networking and built-in API/Ingress VIPs—eliminating the need for an external HAProxy load balancer or dedicated bootstrap VM:
+
+1. **(Optional)** By default, OpenIaC deploys free, open-source **OKD**. To deploy commercial **Red Hat OpenShift (OCP)**, edit `ansible/inventories/openshift-sample/group_vars/all.yml`:
+   ```yaml
+   openshift_edition: "ocp"        # "okd" (Free Default) | "ocp" (Red Hat Commercial)
+   openshift_api_vip: "192.168.56.100"
+   openshift_ingress_vip: "192.168.56.101"
+   ```
+2. Run the deployment command:
+   ```bash
+   make openshift
+   ```
+3. Attach the generated `/opt/openiac-openshift/agent.x86_64.iso` (located on `bastion-01`) to your target bare-metal BMC/iDRAC or VMs and boot them. OpenIaC will automatically monitor the bootstrap and installation process until completion!
+
+### Option D: Cloud-Native VM Virtualization (`kubevirt`)
+Run KVM virtual machines alongside containers. If you run `make kubevirt` on brand-new empty servers, OpenIaC **automatically installs Base OS + Standard Kubernetes (`k8s`) + KubeVirt** in one shot:
+
+```bash
+# Deploy Turnkey K8s + KubeVirt (or add KubeVirt onto an existing K8s/K3s cluster)
 make kubevirt
 
-# Deploy OpenShift / OKD (Defaults to free OKD; set openshift_edition: "ocp" for Red Hat OCP)
-make openshift
+# Or deploy KubeVirt onto an existing OpenShift / OKD cluster
+make openshift-kubevirt
+```
 
-# Deploy OpenStack Private Cloud (Kolla-Ansible)
+### Option E: OpenStack Private Cloud (`openstack`)
+Deploys a containerized multi-node OpenStack cloud using `Kolla-Ansible`:
+
+```bash
 make openstack
 ```
 
-## What Happens Automatically?
+---
+
+## What Happens Automatically Behind the Scenes?
 
 - **Base OS Hardening & Kernel Tuning**: Disables swap, configures SELinux permissive mode, loads `overlay` and `br_netfilter` modules, and applies CRI sysctl network parameters.
 - **Built-in Invisible Helpers**: Automatically generates bootable OpenShift 4.12+ Agent ISOs (`agent.x86_64.iso`) with `nmstate` static networking and built-in VIPs, configures LVM `cinder-volumes` and Neutron dummy interfaces for OpenStack, and enables QEMU emulation fallback for KubeVirt when `/dev/kvm` is absent.
-- **Automatic Kubeconfig & Credentials**: Configures `~/.kube/config` on control plane nodes and `/etc/kolla/admin-openrc.sh` for OpenStack immediately after installation.
+- **Automatic Kubeconfig & Credentials**: Configures `/root/.kube/config` on Kubernetes control plane nodes, `/opt/openiac-openshift/auth/kubeconfig` for OpenShift, and `/etc/kolla/admin-openrc.sh` for OpenStack immediately after installation.

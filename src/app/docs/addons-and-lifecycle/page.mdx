@@ -1,0 +1,103 @@
+# Layer-3 Add-ons & Day-2 Lifecycle Guide
+
+OpenIaC is engineered around a **3-Layer Composable Stack Architecture**. Instead of forcing you to run separate, disconnected scripts for add-on operators or Day-2 maintenance, OpenIaC lets you compose **Layer-3 Add-ons (such as KubeVirt)** on top of any **Layer-2 Core Platform (`k8s`, `k3s`, `openshift`)** and manage their full lifecycle (**Install, Upgrade, Uninstall**).
+
+---
+
+## 1. Three Ways to Deploy KubeVirt (VM Virtualization)
+
+Whether you are starting from brand-new empty servers or adding virtualization to an existing Kubernetes or OpenShift cluster, OpenIaC detects your environment automatically.
+
+### Workflow A: Turnkey All-in-One Mode (On Empty Servers)
+If you have fresh **RHEL / Rocky Linux** servers with nothing installed yet and want a complete VM virtualization hypervisor (replacing legacy oVirt/RHV or VMware), simply update your IPs in `ansible/inventories/k8s-sample/hosts.ini` and run:
+
+```bash
+make kubevirt
+```
+
+**What happens automatically:**
+1. OpenIaC checks if a Kubernetes cluster already exists on `cp-01`.
+2. Seeing a clean server, it automatically runs **`base_os` → `k8s` (Upstream Kubernetes) → `kubevirt` (KubeVirt Operator + CDI + `virtctl` CLI)** from start to finish in a single command!
+
+---
+
+### Workflow B: Automatic Add-on Mode (During `make k8s`, `make k3s`, or `make openshift`)
+If you want KubeVirt to be installed automatically as part of your initial `k8s`, `k3s`, or `openshift` cluster deployment:
+
+1. Open `ansible/inventories/<platform>-sample/group_vars/all.yml` (where `<platform>` is `k8s`, `k3s`, or `openshift`).
+2. Change `enable_kubevirt_addon` from `false` to `true`:
+   ```yaml
+   # ansible/inventories/openshift-sample/group_vars/all.yml
+   enable_kubevirt_addon: true
+   kubevirt_state: "present"
+   kubevirt_version: "v1.2.0"
+   ```
+3. Run your base platform command as usual:
+   ```bash
+   make openshift
+   # or: make k8s / make k3s
+   ```
+   Immediately after the base cluster finishes provisioning, OpenIaC automatically deploys KubeVirt and CDI on top of it!
+
+---
+
+### Workflow C: Standalone Add-on Mode (On an Existing Cluster)
+If you already deployed a `k8s`, `k3s`, or `openshift` cluster earlier and want to add KubeVirt onto it later without re-installing the cluster:
+
+```bash
+# On an existing Standard K8s or K3s cluster
+make kubevirt
+
+# On an existing OpenShift / OKD cluster
+make openshift-kubevirt
+```
+
+**What happens automatically:**
+- OpenIaC detects the existing `/root/.kube/config` (for `k8s`/`k3s`) or `/opt/openiac-openshift/auth/kubeconfig` (for `openshift`), skips base cluster installation, and deploys KubeVirt directly onto your running cluster.
+
+---
+
+## 2. Day-2 Lifecycle Management (Upgrade & Clean Uninstall)
+
+### Upgrading KubeVirt Version (Zero-Downtime Rolling Update)
+To upgrade KubeVirt or CDI to a newer release on a running cluster:
+
+1. Update the version string in `ansible/inventories/<platform>-sample/group_vars/all.yml`:
+   ```yaml
+   kubevirt_state: "present"
+   kubevirt_version: "v1.3.0"
+   kubevirt_cdi_version: "v1.60.0"
+   ```
+2. Re-run the deployment command:
+   ```bash
+   make kubevirt
+   # or for OpenShift:
+   make openshift-kubevirt
+   ```
+   OpenIaC applies the updated Operator manifests declaratively (`kubectl apply -f`), triggering a rolling update of the KubeVirt control plane and updating `/usr/local/bin/virtctl`.
+
+---
+
+### Cleanly Uninstalling KubeVirt (Without Touching the Cluster)
+If you want to remove KubeVirt and CDI while keeping your underlying Kubernetes or OpenShift cluster 100% intact, run:
+
+```bash
+# One-command uninstallation
+make kubevirt-uninstall
+```
+
+Or set `kubevirt_state: "absent"` in `group_vars/all.yml` and run `make kubevirt` (or `make openshift-kubevirt`). OpenIaC will cleanly delete the CDI and KubeVirt Custom Resources and Operators in reverse order (`--ignore-not-found=true`) and remove the `virtctl` binary.
+
+---
+
+## 3. Enterprise Architecture Patterns: Multi-Stack & Rollbacks
+
+### Running OpenShift on OpenStack (Underlay IaaS → Overlay PaaS)
+Because OpenIaC uses the **OpenShift 4.12+ Agent-based Installer** with static `nmstate` networking, deploying OpenShift on top of OpenStack VMs requires zero custom glue code:
+1. Deploy your private cloud IaaS using `make openstack`.
+2. Provision target VMs on OpenStack and record their IP and MAC addresses in `ansible/inventories/openshift-sample/hosts.ini`.
+3. Run `make openshift` and boot the OpenStack VMs from the generated `agent.x86_64.iso` image.
+
+### Core Platform Upgrades vs. Rollbacks (Why Snapshot Rollback Beats In-Place Downgrade)
+- **Layer-3 Add-ons (`kubevirt`)**: Can be freely upgraded, downgraded, or uninstalled via declarative Operator manifests (`kubevirt_state: "present" | "absent"`).
+- **Layer-2 Core Platforms (`k8s`, `openshift`, `openstack`)**: Because core platforms rely on stateful databases (`etcd` in Kubernetes/OpenShift and `MariaDB` in OpenStack) that perform one-way schema migrations during upgrades, **in-place binary downgrades are prohibited by CNCF, Red Hat, and OpenStack standards**. Instead, enterprise rollbacks are always performed by taking an automated **`etcd` / database snapshot backup** prior to upgrading and restoring from that snapshot if a rollback is required.

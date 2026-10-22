@@ -9,6 +9,7 @@ export default function DocsLayout({
     { href: '/docs', label: 'Introduction' },
     { href: '/docs/getting-started', label: 'Getting Started (Vagrant)' },
     { href: '/docs/online-deployment', label: 'On-Premise Deployment' },
+    { href: '/docs/addons-and-lifecycle', label: 'Add-ons & Lifecycle (Day-2)' },
     { href: '/docs/offline-deployment', label: 'Offline Air-Gapped' },
     { href: '/docs/public-cloud', label: 'Public Cloud (Terraform)' },
   ];
