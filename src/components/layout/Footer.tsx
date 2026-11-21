@@ -12,7 +12,7 @@ export default function Footer() {
           </div>
           <span className="hidden sm:inline text-muted-foreground/40">|</span>
           <span className="text-xs text-muted-foreground">
-            Enterprise Hybrid Cloud &amp; Container Platform Framework
+            On-Premise &amp; Air-Gapped Platform Framework
           </span>
         </div>
 
@@ -23,8 +23,8 @@ export default function Footer() {
           <Link href="/docs" className="hover:text-foreground transition-colors">
             Documentation
           </Link>
-          <Link href="/docs/public-cloud" className="hover:text-foreground transition-colors">
-            Terraform Cloud
+          <Link href="/docs/offline-deployment" className="hover:text-foreground transition-colors">
+            Air-Gapped
           </Link>
           <a
             href="https://github.com/openiac-io/openiac"

@@ -9,9 +9,9 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "OpenIaC — Enterprise Hybrid Cloud & Container Platform Framework",
+  title: "OpenIaC — On-Premise & Air-Gapped Platform Framework",
   description:
-    "Provision Kubernetes (K8s, K3s, OpenShift), KubeVirt VM Virtualization, OpenStack Private Cloud, and Public Cloud (AWS EKS, GCP GKE, Azure AKS) with a single command.",
+    "Provision Kubernetes (K8s, K3s, OpenShift), KubeVirt VM Virtualization, and OpenStack Private Cloud on RHEL/Rocky Linux—online or air-gapped—with a single command.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

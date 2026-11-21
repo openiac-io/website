@@ -7,13 +7,7 @@ import {
   Lock,
   Layers,
   ArrowRight,
-  Terminal,
-  Cloud,
-  Cpu,
   ShieldCheck,
-  Sparkles,
-  CheckCircle2,
-  Box,
 } from 'lucide-react';
 
 const ON_PREM_PLATFORMS = [
@@ -59,30 +53,6 @@ const ON_PREM_PLATFORMS = [
   },
 ];
 
-const PUBLIC_CLOUD_PLATFORMS = [
-  {
-    name: 'Amazon Web Services',
-    code: 'aws',
-    command: 'make aws-apply',
-    stack: 'Amazon EKS · Multi-AZ VPC · IAM',
-    desc: 'Production-ready AWS EKS blueprint provisioning a dedicated Multi-AZ VPC, IAM roles, and managed node groups.',
-  },
-  {
-    name: 'Google Cloud Platform',
-    code: 'gcp',
-    command: 'make gcp-apply',
-    stack: 'Google GKE · Dedicated VPC',
-    desc: 'Modular Terraform blueprint for regional Google Kubernetes Engine clusters with custom subnetworks and node pools.',
-  },
-  {
-    name: 'Microsoft Azure',
-    code: 'azure',
-    command: 'make azure-apply',
-    stack: 'Azure AKS · VNet · Managed Identity',
-    desc: 'Enterprise Azure Kubernetes Service architecture with isolated VNet subnets and SystemAssigned identity.',
-  },
-];
-
 export default function Home() {
   return (
     <>
@@ -99,21 +69,21 @@ export default function Home() {
           >
             <div className="inline-flex items-center rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-brand-300 mb-8">
               <span className="flex h-2 w-2 rounded-full bg-brand-400 mr-2.5 animate-pulse"></span>
-              Zero-Knowledge UX · On-Premise Air-Gapped &amp; Public Cloud
+              Zero-Knowledge UX · On-Premise &amp; Air-Gapped Ready
             </div>
 
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1]">
               One Command. Any Platform.
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-indigo-400 to-cyan-400">
-                Cloud to Air-Gapped.
+                Bare-Metal to Air-Gapped.
               </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               The open-source platform engineering framework for provisioning{' '}
-              <span className="text-foreground font-medium">Kubernetes, OpenShift, KubeVirt, OpenStack</span> on
-              RHEL/Rocky Linux and <span className="text-foreground font-medium">EKS, GKE, AKS</span> with Terraform.
+              <span className="text-foreground font-medium">Kubernetes, OpenShift, KubeVirt, and OpenStack</span> on{' '}
+              <span className="text-foreground font-medium">RHEL/Rocky Linux</span>—online or air-gapped—with Ansible.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
@@ -176,10 +146,10 @@ export default function Home() {
                   <span className="text-brand-400">$</span> <span className="text-foreground">make openstack</span>{' '}
                   <span className="text-muted-foreground/70"># OpenStack Private Cloud (Kolla-Ansible)</span>
                 </div>
-                <div className="pt-2 text-muted-foreground"># 2. Provision Public Cloud Production Clusters (Terraform)</div>
+                <div className="pt-2 text-muted-foreground"># 2. Bundle Air-Gapped Offline Artifacts</div>
                 <div>
-                  <span className="text-brand-400">$</span> <span className="text-foreground">make aws-apply</span>{' '}
-                  <span className="text-muted-foreground/70"># Multi-AZ VPC + Amazon EKS (or gcp-apply / azure-apply)</span>
+                  <span className="text-brand-400">$</span> <span className="text-foreground">make pack-k8s</span>{' '}
+                  <span className="text-muted-foreground/70"># Portable tarball with RPMs, binaries &amp; container images</span>
                 </div>
               </div>
             </div>
@@ -199,12 +169,12 @@ export default function Home() {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Instead of a cluttered collection of random scripts, OpenIaC focuses exclusively on the industry-standard
-              container, virtualization, and cloud platforms that power modern enterprises.
+              container, virtualization, and private cloud platforms that power modern data centers.
             </p>
           </div>
 
           {/* On-Premise Platforms */}
-          <div className="mb-14">
+          <div>
             <div className="flex items-center gap-2.5 mb-6">
               <Server className="h-5 w-5 text-brand-400" />
               <h3 className="text-xl font-bold">On-Premise &amp; Air-Gapped Platforms (Ansible Engine)</h3>
@@ -222,36 +192,6 @@ export default function Home() {
                       </span>
                       <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                         {item.badge}
-                      </span>
-                    </div>
-                    <h4 className="text-lg font-bold mb-1">{item.name}</h4>
-                    <p className="text-xs font-mono text-muted-foreground mb-3">{item.stack}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Public Cloud Platforms */}
-          <div>
-            <div className="flex items-center gap-2.5 mb-6">
-              <Cloud className="h-5 w-5 text-indigo-400" />
-              <h3 className="text-xl font-bold">Public Cloud Production Blueprints (Terraform Engine)</h3>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {PUBLIC_CLOUD_PLATFORMS.map((item) => (
-                <div
-                  key={item.code}
-                  className="bg-background border border-border rounded-2xl p-6 hover:border-indigo-500/60 transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="font-mono text-xs px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                        {item.command}
-                      </span>
-                      <span className="text-[11px] font-medium text-indigo-300 bg-indigo-500/10 px-2.5 py-0.5 rounded-full border border-indigo-500/20">
-                        Terraform HCL
                       </span>
                     </div>
                     <h4 className="text-lg font-bold mb-1">{item.name}</h4>
@@ -286,7 +226,7 @@ export default function Home() {
               {
                 step: '01',
                 title: 'Sensible Defaults Out-of-the-Box',
-                desc: 'No need to edit dozens of YAML or HCL files. Every role and Terraform module ships with verified production defaults.',
+                desc: 'No need to edit dozens of YAML files. Every Ansible role ships with sensible, version-open defaults.',
               },
               {
                 step: '02',
@@ -296,7 +236,7 @@ export default function Home() {
               {
                 step: '03',
                 title: 'One-Command Execution',
-                desc: 'Run a single make target (e.g., make k8s or make aws-apply). Kubeconfigs and credentials are automatically configured for immediate use.',
+                desc: 'Run a single make target (e.g., make k8s or make openshift). Kubeconfigs and credentials are automatically configured for immediate use.',
               },
             ].map((item) => (
               <div
@@ -320,7 +260,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Enterprise Engineering Standards</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Built on strict architectural guardrails for reliability across air-gapped data centers and public clouds.
+              Built on strict architectural guardrails for reliability across online and air-gapped on-premise data centers.
             </p>
           </div>
 
