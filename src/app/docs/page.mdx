@@ -9,7 +9,7 @@ Built with a **Zero-Knowledge UX** philosophy and a **3-Layer Composable Stack A
 OpenIaC organizes enterprise infrastructure into three clean, modular layers:
 
 1. **Layer 1 — Base OS & Underlay Infrastructure (`base_os`)**:
-   - Hardens **RHEL / Rocky Linux** bare-metal servers or VMs (disables swap, configures SELinux, loads `overlay` and `br_netfilter` kernel modules, and tunes CRI sysctl parameters).
+   - Hardens **RHEL / Rocky Linux** bare-metal servers or VMs (disables swap, enforces SELinux and least-privilege firewalld rules, loads `overlay` and `br_netfilter` kernel modules, and tunes CRI sysctl parameters).
 2. **Layer 2 — Core Container & Private Cloud Platforms**:
    - Provisions your primary container orchestrator (`k8s`, `k3s`, `openshift`) or private cloud IaaS (`openstack`).
 3. **Layer 3 — Composable Platform Add-ons & Day-2 Lifecycle (`kubevirt`)**:
